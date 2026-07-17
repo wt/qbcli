@@ -1,0 +1,7 @@
+.env
+.zed
+
+# should be removed at some point
+/examples
+
+/target
