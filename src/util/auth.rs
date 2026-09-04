@@ -42,21 +42,11 @@ pub async fn get_stored_profile_auth_token(
                 let bearer = toml::from_slice::<Bearer>(secret.as_bytes())?;
                 debug!("bearer: {:#?}", bearer);
 
-                // let bearer: Token = bearer.into();
-                //let bearer = TemporalBearerGuard::from(bearer); //token.bearer);
-                // let bearer = Box::new(bearer);
-                // debug!("bearer: {:#?}", bearer);
-
-                // disabled refresh
-                // let bearer = oauth_client.refresh_token(bearer, None).await?;
-                // debug!("bearer: {:#?}", bearer);
-
                 let mut attrs = item.attributes().await?;
                 let realm_id = attrs.remove("realm").unwrap();
                 let environment = attrs.remove("environment").unwrap();
 
                 let token = Token::from(bearer);
-                // let bearer: Token = bearer.into();
 
                 let auth_env = AuthEnvironment::from_str(environment.as_ref(), true)
                     .map_err(|e| anyhow::anyhow!(e))?;
@@ -92,14 +82,6 @@ pub(crate) const PRODUCTION_DISC_URL: &str =
 pub(crate) struct QBSandboxProvider {
     pub(crate) config: openid::Config,
 }
-
-// impl QBSandboxProvider {
-//     pub(crate) async fn new() -> Result<Self> {
-//         let config = qbsandbox_provider_config().await?;
-
-//         Ok(Self { config })
-//     }
-// }
 
 impl From<openid::Config> for QBSandboxProvider {
     fn from(config: openid::Config) -> Self {
